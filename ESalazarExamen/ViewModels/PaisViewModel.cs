@@ -20,7 +20,7 @@ namespace ESalazarExamen.Views
         private string _statusMessage;
         public ObservableCollection<Pais> _paisesList { get; set; }
         
-        public ICommand SavePaisCommand { get; set; }
+        
         public ICommand GetAllPaisesCommand { get; set;  }
         public ICommand BuscarPaisCommand { get; set; }
         public ICommand LimpiarBusquedaCommand { get; set; }
@@ -107,40 +107,12 @@ namespace ESalazarExamen.Views
             _pais = new Pais();
             PaisList = new ObservableCollection<Pais>();
 
-            SavePaisCommand = new AsyncRelayCommand(SavePais);
             GetAllPaisesCommand = new AsyncRelayCommand(GetAllPaises);
-            BuscarPaisCommand = new AsyncRelayCommand(BuscarPais);
+
 
         }
 
-        public async Task SavePais()
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(_pais.Nombre))
-                {
-                    throw new Exception("El nombre no puede estar vacío.");
-                }
-                if (string.IsNullOrEmpty(_pais.region))
-                {
-                    throw new Exception("La region no puede estar vacío.");
-                }
-                if (string.IsNullOrEmpty(_pais.linkMaps))
-                {
-                    throw new Exception("El link no puede estar vacío.");
-                }
-
-                _paisRepository.SavePais(_pais.Nombre, _pais.region, _pais.linkMaps);
-                StatusMessage = $"Pais {_pais.Nombre} guardado exitosamente.";
-
-                await Shell.Current.GoToAsync($"..?saved={_pais.Nombre}"); //Actualiza la pantalla
-            }
-            catch (Exception ex)
-            {
-                StatusMessage = $"Error al guardar la persona: {ex.Message}";
-            }
-        }
-
+        
         private async Task GetAllPaises()
         {
             try
@@ -158,16 +130,6 @@ namespace ESalazarExamen.Views
                 StatusMessage = $"Error al cargar los paises. Detalles: {ex.Message}";
             }
         }
-
-        private void LimpiarBusqueda()
-        {
-            NombreBusqueda = string.Empty;
-            StatusMessage = string.Empty;
-        }
-
-
-
-
 
     }
 }
