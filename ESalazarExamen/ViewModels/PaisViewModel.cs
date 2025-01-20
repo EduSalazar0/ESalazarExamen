@@ -18,7 +18,6 @@ namespace ESalazarExamen.Views
         private Models.Pais _pais;
         private readonly PaisRepository _paisRepository;
         private string _statusMessage;
-        private readonly HttpClient _httpClient = new HttpClient();
         public ObservableCollection<Pais> _paisesList { get; set; }
         
         public ICommand SavePaisCommand { get; set; }
@@ -42,7 +41,11 @@ namespace ESalazarExamen.Views
         public string StatusMessage
         {
             get => _statusMessage;
-            set => SetProperty(ref _statusMessage, value);
+            set
+            {
+                _statusMessage = value;
+                OnPropertyChanged();
+            }
         }
 
         public string Nombre
@@ -83,8 +86,6 @@ namespace ESalazarExamen.Views
                 }
             }
         }
-        public int Id => _pais.Id;
-        public string NombreBusqueda { get; set; }
         public ObservableCollection<Models.Pais> PaisList
         {
             get => _paisesList;
@@ -97,18 +98,18 @@ namespace ESalazarExamen.Views
                 }
             }
         }
+        public int Id => _pais.Id;
+        
         public PaisViewModel()
         {
             string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "EduardoSalazar.db3");
             _paisRepository = new PaisRepository(dbPath);
-            _httpClient = new HttpClient();
-
+            _pais = new Pais();
             PaisList = new ObservableCollection<Pais>();
 
             SavePaisCommand = new AsyncRelayCommand(SavePais);
             GetAllPaisesCommand = new AsyncRelayCommand(GetAllPaises);
             BuscarPaisCommand = new AsyncRelayCommand(BuscarPais);
-            //LimpiarBusquedaCommand = new RelayCommand(LimpiarBusqueda);
 
         }
 
@@ -116,69 +117,46 @@ namespace ESalazarExamen.Views
         {
             try
             {
-                if (Pais == null)
+                if (string.IsNullOrEmpty(_pais.Nombre))
                 {
-                    StatusMessage = "No hay información de pais para guardar";
-                    return;
+                    throw new Exception("El nombre no puede estar vacío.");
                 }
-            } catch (Exception ex)
-            {
-                StatusMessage = $"Error al guardar la informacion. Detalle: {ex.Message}";
-            }
+                if (string.IsNullOrEmpty(_pais.region))
+                {
+                    throw new Exception("La region no puede estar vacío.");
+                }
+                if (string.IsNullOrEmpty(_pais.linkMaps))
+                {
+                    throw new Exception("El link no puede estar vacío.");
+                }
 
-            await _paisRepository.SavePais(Pais);
-            StatusMessage = $"Pais {Pais.Nombre} guardado con exito";
+                _paisRepository.SavePais(_pais.Nombre, _pais.region, _pais.linkMaps);
+                StatusMessage = $"Pais {_pais.Nombre} guardado exitosamente.";
+
+                await Shell.Current.GoToAsync($"..?saved={_pais.Nombre}"); //Actualiza la pantalla
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = $"Error al guardar la persona: {ex.Message}";
+            }
         }
 
         private async Task GetAllPaises()
         {
-            var paises = await _paisRepository.GetAllPaises();
-            PaisList.Clear();
-            foreach(var pais in paises)
-            {
-                PaisList.Add(pais);
-            }
-        }
-
-        private async Task BuscarPais()
-        {
             try
             {
-                if (string.IsNullOrWhiteSpace(NombreBusqueda))
+                var paises = await _paisRepository.GetAllPaises();
+                PaisList.Clear();
+                foreach (var pais in paises)
                 {
-                    StatusMessage = "Por favor, ingrese un nombre de país para buscar.";
-                    return;
+                    PaisList.Add(pais);
                 }
-
-                string url = $"https://restcountries.com/v3.1/name/{NombreBusqueda}?fields=name,region,maps";
-                var response = await _httpClient.GetAsync(url);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var jsonResponse = await response.Content.ReadAsStringAsync();
-                    var paises = JsonSerializer.Deserialize<List<Pais>>(jsonResponse);
-
-                    if (paises != null && paises.Count > 0)
-                    {
-                        Pais = paises[0];
-                        StatusMessage = $"País encontrado: {Pais.Nombre}. Región: {Pais.region}.";
-                    }
-                    else
-                    {
-                        StatusMessage = "No se encontró ningún país con ese nombre.";
-                    }
-                }
-                else
-                {
-                    StatusMessage = "Error al conectarse al servicio.";
-                }
+                StatusMessage = $"Los paises se cargaron correctamente";
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                StatusMessage = $"Error al buscar el país: {ex.Message}";
+                StatusMessage = $"Error al cargar los paises. Detalles: {ex.Message}";
             }
-
-
         }
 
         private void LimpiarBusqueda()

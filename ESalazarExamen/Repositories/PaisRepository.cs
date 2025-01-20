@@ -27,32 +27,26 @@ namespace ESalazarExamen.Repositories
         public PaisRepository(string dbPath)
         {
             _dbPath = dbPath;
-             Init();
         }
 
-        public async Task SavePais(Pais pais)
+        public async Task SavePais(String nombre, string region, string linkmaps)
         {
+            int result = 0;
             try
             {
-                if (string.IsNullOrEmpty(pais.Nombre))
+                if (string.IsNullOrEmpty(nombre))
                     throw new Exception("Se requiere un nombre valido");
 
-                if (string.IsNullOrEmpty(pais.region))
+                if (string.IsNullOrEmpty(region))
                     throw new Exception("Se requiere una region valida");
 
-                if (string.IsNullOrEmpty(pais.linkMaps))
+                if (string.IsNullOrEmpty(linkmaps))
                     throw new Exception("Se requiere un link valido");
 
                 Init();
-                var existingPais = conn.Table<Pais>().FirstOrDefault(p => p.Nombre == pais.Nombre);
-                if (existingPais != null)
-                {
-                    StatusMessage = $"El pais {pais.Nombre} ya existe existe en la base de datos";
-                    return;
-                }
-
-                conn.Insert(pais);
-                StatusMessage = $"Pais {pais.Nombre} guardado correctamente";
+                result = conn.Insert(new Pais { Nombre = nombre, region = region, linkMaps = linkmaps });
+              
+                StatusMessage = $"Pais {nombre} guardado correctamente";
             }catch (Exception ex)
             {
                 StatusMessage = $"Error al guardar el pais. Detalles: {ex.Message}";
@@ -75,4 +69,5 @@ namespace ESalazarExamen.Repositories
             return new List<Pais>();
         }
     }
+
 }
