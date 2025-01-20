@@ -11,7 +11,7 @@ using ESalazarExamen.Models;
 using CommunityToolkit.Mvvm.Input;
 using System.Text.Json;
 
-namespace ESalazarExamen.Views
+namespace ESalazarExamen.ViewModels
 {
     public class PaisViewModel : ObservableObject
     {
@@ -22,7 +22,6 @@ namespace ESalazarExamen.Views
         
         
         public ICommand GetAllPaisesCommand { get; set;  }
-        public ICommand BuscarPaisCommand { get; set; }
         public ICommand LimpiarBusquedaCommand { get; set; }
 
         public Models.Pais Pais
@@ -112,7 +111,6 @@ namespace ESalazarExamen.Views
 
         }
 
-        
         private async Task GetAllPaises()
         {
             try

@@ -24,7 +24,7 @@ namespace ESalazarExamen.ViewModels
 
         public ApiViewModel()
         {
-            string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "GabrielCalderon.db3");
+            string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "EduardoSalazar1.db3");
             _paisRepository = new PaisRepository(dbPath);
 
             Paises = new ObservableCollection<Api>();
