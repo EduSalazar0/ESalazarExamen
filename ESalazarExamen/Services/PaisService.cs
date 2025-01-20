@@ -16,7 +16,7 @@ namespace ESalazarExamen.Services
         {
             _httpClient = new HttpClient();
         }
-        public async Task<List<Pais>> GetPaisAsync(string nombre,string region,string maps)
+        public async Task<List<Pais>> GetPaisAsync()
         {
             var url = "https://restcountries.com/v3.1/name/?fields=name,region,maps";
             var responde = await _httpClient.GetStringAsync(url);
