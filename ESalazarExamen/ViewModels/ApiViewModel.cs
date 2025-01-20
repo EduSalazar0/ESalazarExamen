@@ -30,7 +30,8 @@ namespace ESalazarExamen.ViewModels
             Paises = new ObservableCollection<Api>();
 
             BuscarPaisCommand = new AsyncRelayCommand(BuscarPais);
-            
+            SavePaisCommand = new AsyncRelayCommand(SavePais);
+
         }
 
         public string NombreSeleccionado
@@ -92,9 +93,24 @@ namespace ESalazarExamen.ViewModels
                 await Shell.Current.DisplayAlert("Error", StatusMessage, "OK");
             }
         }
+        public async Task SavePais()
+        {
+            try
+            {
+                if (PaisSeleccionado == null)
+                {
+                    throw new Exception("No hay un pais seleccionado para guardar.");
+                    return;
+                }
 
-        
-
+                _paisRepository.SavePais(PaisSeleccionado.Nombre, PaisSeleccionado.Region, PaisSeleccionado.LinkMaps);
+                StatusMessage = $"Pais {PaisSeleccionado.Nombre} guardado exitosamente.";
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = $"Error al guardarel pais: {ex.Message}";
+            }
+        }
 
     }
 }
