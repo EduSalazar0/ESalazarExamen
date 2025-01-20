@@ -7,9 +7,16 @@
     Shell.FlyoutBehavior="Disabled"
     Title="ESalazarExamen">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <TabBar>
+        <ShellContent
+            Title="Home"
+            ContentTemplate="{DataTemplate local:MainPage}"
+            Route="MainPage" />
+        <ShellContent 
+            Title="API"
+            ContentTemplate="{DataTemplate local:ApiPage}" 
+            Route="ApiPage"/>
+    </TabBar>
+
 
 </Shell>
