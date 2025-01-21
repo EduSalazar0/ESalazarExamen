@@ -16,11 +16,13 @@
                Text="{Binding Nombre}" />
 
         <!-- Botón para buscar país -->
-        <Button Text="Buscar"
+        <Button x:Name="ESalazarButton1"
+                Text="Buscar"
                 Command="{Binding BuscarPaisCommand}" />
 
         <!-- Botón para limpiar el campo de texto -->
-        <Button Text="Limpiar"
+        <Button x:Name="ESalazarButton2"
+                Text="Limpiar"
                 Command="{Binding LimpiarBusquedaCommand}" />
 
         <!-- ListView para mostrar el país encontrado -->
@@ -33,12 +35,17 @@
         </ListView>
 
         <!-- Botón para guardar el país encontrado -->
-        <Button Text="Guardar"
+        <Button x:Name="ESalazarButton3"
+                Text="Guardar"
                 Command="{Binding SaveCommand}" />
 
         <!-- Mensaje de estado -->
-        <Label Text="StatusMessage:" TextColor="Aquamarine"/>
-        <Label Text="{Binding StatusMessage}" TextColor="ForestGreen" />
+        <Label  x:Name="ESalazarLabel4"
+                Text="StatusMessage:" 
+                TextColor="Aquamarine"/>
+        <Label  x:Name="ESalazarLabel6"
+                Text="{Binding StatusMessage}" 
+               TextColor="ForestGreen" />
     </VerticalStackLayout>
 
 </ContentPage>

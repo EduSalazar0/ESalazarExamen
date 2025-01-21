@@ -15,13 +15,13 @@
             Spacing="25">
 
             <!-- Botón para cargar todos los países almacenados -->
-            <Button x:Name="BotonListar"
+            <Button x:Name="ESalazarBotonListar"
                     Text="Revisar Listado de Países"
                     TextColor="DarkCyan"
                     Command="{Binding GetAllPaisesCommand}" />
 
             <!-- CollectionView para mostrar los países almacenados -->
-            <CollectionView x:Name="ListaPaises"
+            <CollectionView x:Name="ESalazarListaPaises"
                             ItemsSource="{Binding Paises}"
                             HeightRequest="200"
                             VerticalScrollBarVisibility="Default"
@@ -40,23 +40,27 @@
                                Margin="5"
                                BackgroundColor="LightCyan">
                             <HorizontalStackLayout Spacing="5" HorizontalOptions="FillAndExpand">
-                                <Label Text="{Binding Id}"
+                                <Label x:Name="ESalazarLabel"
+                                        Text="{Binding Id}"
                                        TextColor="DarkSeaGreen"
                                        FontSize="Small"
                                        HorizontalTextAlignment="Center"
                                        VerticalTextAlignment="Center"
                                        WidthRequest="30" />
-                                <Label Text="{Binding Nombre}"
+                                <Label x:Name="ESalazarLabel2"
+                                        Text="{Binding Nombre}"
                                        TextColor="DarkSeaGreen"
                                        FontSize="Medium"
                                        HorizontalOptions="Center"
                                        VerticalOptions="Center" />
-                                <Label Text="{Binding region}"
+                                <Label x:Name="ESalazarLabel3"
+                                        Text="{Binding region}"
                                        TextColor="DarkSeaGreen"
                                        FontSize="Medium"
                                        HorizontalOptions="Center"
                                        VerticalOptions="Center" />
-                                <Label Text="{Binding linkMaps}"
+                                <Label x:Name="ESalazarLabel4"
+                                        Text="{Binding linkMaps}"
                                        TextColor="DarkSeaGreen"
                                        FontSize="Small"
                                        HorizontalOptions="Center"
