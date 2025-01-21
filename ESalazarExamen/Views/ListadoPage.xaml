@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ESalazarExamen.Views.ApiPage"
+             x:Class="ESalazarExamen.Views.ListadoPage"
              xmlns:vm="clr-namespace:ESalazarExamen.ViewModels"
-             Title="Listado de Paises Guardados">
+             Title="Listado de Paises Guardados / Eduardo Salazar">
 
     <ContentPage.BindingContext>
         <vm:PaisViewModel/> 
@@ -39,7 +39,7 @@
                                Padding="20"
                                Margin="5"
                                BackgroundColor="LightCyan">
-                            <HorizontalStackLayout>
+                            <HorizontalStackLayout Spacing="5" HorizontalOptions="FillAndExpand">
                                 <Label Text="{Binding Id}"
                                        TextColor="DarkSeaGreen"
                                        FontSize="Small"

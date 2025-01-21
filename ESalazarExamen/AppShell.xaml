@@ -14,8 +14,8 @@
             Route="MainPage" />
         <ShellContent 
             Title="Lista Paises DB"
-            ContentTemplate="{DataTemplate local:ApiPage}" 
-            Route="ApiPage"/>
+            ContentTemplate="{DataTemplate local:ListadoPage}" 
+            Route="ListadoPage"/>
     </TabBar>
 
 

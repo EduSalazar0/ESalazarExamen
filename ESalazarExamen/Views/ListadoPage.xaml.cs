@@ -2,10 +2,10 @@ using ESalazarExamen.ViewModels;
 
 namespace ESalazarExamen.Views
 {
-    public partial class ApiPage : ContentPage
+    public partial class ListadoPage : ContentPage
     {
 
-        public ApiPage()
+        public ListadoPage()
         {
             InitializeComponent();
             BindingContext = new PaisViewModel();

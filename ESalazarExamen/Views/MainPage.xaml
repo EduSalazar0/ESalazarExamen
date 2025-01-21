@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:ESalazarExamen.ViewModels"
              x:Class="ESalazarExamen.Views.MainPage"
-             Title="Busqueda de Paises">
+             Title="Busqueda de Paises / Eduardo Salazar">
 
     <ContentPage.BindingContext>
         <vm:PaisViewModel/>
@@ -37,7 +37,8 @@
                 Command="{Binding SaveCommand}" />
 
         <!-- Mensaje de estado -->
-        <Label Text="{Binding StatusMessage}" TextColor="Red" />
+        <Label Text="StatusMessage:" TextColor="Aquamarine"/>
+        <Label Text="{Binding StatusMessage}" TextColor="ForestGreen" />
     </VerticalStackLayout>
 
 </ContentPage>
