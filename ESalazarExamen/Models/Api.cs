@@ -8,12 +8,10 @@ namespace ESalazarExamen.Models
 {
     public class Api
     {
-        public string Nombre { get; set; }
-        public string Region { get; set; }
-        public string LinkMaps { get; set; }
-        public string MiNombre { get; set; }
-
-
+        public name name { get; set; }
+        public string region { get; set; }
+        public maps maps { get; set; }
+        public List<string> borders { get; set; }
 
         private static readonly HttpClient _httpClient = new HttpClient
         {
@@ -34,9 +32,21 @@ namespace ESalazarExamen.Models
             }
             catch (Exception)
             {
-                return null;
+                return null; // Devuelve null en caso de error
             }
         }
+    }
+
+    public class name
+    {
+        public string common { get; set; }
+        public string official { get; set; }
+    }
+
+    public class maps
+    {
+        public string googleMaps { get; set; }
+        public string openStreetMaps { get; set; }
     }
 }
 

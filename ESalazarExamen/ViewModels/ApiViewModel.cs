@@ -70,9 +70,9 @@ namespace ESalazarExamen.ViewModels
                     // Mostrar datos del país encontrado
                     await Shell.Current.DisplayAlert(
                         "País Encontrado",
-                        $"Nombre: {PaisSeleccionado.Nombre}\n" +
-                        $"Región: {PaisSeleccionado.Region}\n" +
-                        $"Mapa: {PaisSeleccionado.LinkMaps}",
+                        $"Nombre: {PaisSeleccionado.name.common}\n" +
+                        $"Región: {PaisSeleccionado.region}\n" +
+                        $"Mapa: {PaisSeleccionado.maps.googleMaps}",
                         "OK"
                     );
 
@@ -99,16 +99,17 @@ namespace ESalazarExamen.ViewModels
             {
                 if (PaisSeleccionado == null)
                 {
-                    throw new Exception("No hay un pais seleccionado para guardar.");
+                    await Shell.Current.DisplayAlert("Error", "No hay un país seleccionado para guardar.", "OK");
                     return;
                 }
 
-                _paisRepository.SavePais(PaisSeleccionado.Nombre, PaisSeleccionado.Region, PaisSeleccionado.LinkMaps);
-                StatusMessage = $"Pais {PaisSeleccionado.Nombre} guardado exitosamente.";
+                _paisRepository.SavePais(PaisSeleccionado.name.common, PaisSeleccionado.region, PaisSeleccionado.maps.googleMaps);
+                StatusMessage = $"Pais {PaisSeleccionado.name.common} guardado exitosamente.";
+                await Shell.Current.DisplayAlert("Guardado", StatusMessage, "OK");
             }
             catch (Exception ex)
             {
-                StatusMessage = $"Error al guardarel pais: {ex.Message}";
+                StatusMessage = $"Error al guardar el pais: {ex.Message}";
             }
         }
 

@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ESalazarExamen.Views.MainPage"
              xmlns:vm="clr-namespace:ESalazarExamen.ViewModels"
+             x:Class="ESalazarExamen.Views.MainPage"
              Title="Busqueda de Paises">
 
     <ContentPage.BindingContext>
@@ -11,15 +11,20 @@
 
     <VerticalStackLayout Padding="10">
         <!-- Entrada para búsqueda de país -->
-        <Entry Placeholder="Ingrese el nombre del país"
-               Text="{Binding NombreBusqueda}" />
+        <Entry x:Name="ESalazar_Text"
+               Placeholder="Ingrese el nombre del país"
+               Text="{Binding Nombre}" />
 
         <!-- Botón para buscar país -->
         <Button Text="Buscar"
                 Command="{Binding BuscarPaisCommand}" />
 
+        <!-- Botón para limpiar el campo de texto -->
+        <Button Text="Limpiar"
+                Command="{Binding LimpiarBusquedaCommand}" />
+
         <!-- ListView para mostrar el país encontrado -->
-        <ListView ItemsSource="{Binding PaisList}">
+        <ListView ItemsSource="{Binding Pais}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <TextCell Text="{Binding Nombre}" Detail="{Binding Region}" />
@@ -29,7 +34,7 @@
 
         <!-- Botón para guardar el país encontrado -->
         <Button Text="Guardar"
-                Command="{Binding SavePaisCommand}" />
+                Command="{Binding SaveCommand}" />
 
         <!-- Mensaje de estado -->
         <Label Text="{Binding StatusMessage}" TextColor="Red" />

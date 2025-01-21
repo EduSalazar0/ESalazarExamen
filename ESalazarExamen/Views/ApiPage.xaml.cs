@@ -1,12 +1,15 @@
 using ESalazarExamen.ViewModels;
 
-namespace ESalazarExamen;
-
-public partial class ApiPage : ContentPage
+namespace ESalazarExamen.Views
 {
-	public ApiPage()
-	{
-		InitializeComponent();
-		BindingContext = new ApiViewModel();
-	}
+    public partial class ApiPage : ContentPage
+    {
+
+        public ApiPage()
+        {
+            InitializeComponent();
+            BindingContext = new ApiViewModel();
+        }
+    }
+
 }

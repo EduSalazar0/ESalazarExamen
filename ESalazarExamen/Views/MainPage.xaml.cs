@@ -1,7 +1,7 @@
 ﻿using ESalazarExamen.Views;
 using ESalazarExamen.ViewModels;
 
-namespace ESalazarExamen
+namespace ESalazarExamen.Views
 {
     public partial class MainPage : ContentPage
     {
@@ -12,7 +12,7 @@ namespace ESalazarExamen
             BindingContext = new  PaisViewModel();
         }
 
-
+        
     }
 
 }

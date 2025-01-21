@@ -18,9 +18,10 @@ namespace ESalazarExamen.ViewModels
         private Models.Pais _pais;
         private readonly PaisRepository _paisRepository;
         private string _statusMessage;
-        public ObservableCollection<Pais> _paisesList { get; set; }
-        
-        
+        public ObservableCollection<Pais> Paises { get; set; }
+
+        public ICommand SaveCommand { get; set; }
+        public ICommand BuscarPaisCommand { get; set; }
         public ICommand GetAllPaisesCommand { get; set;  }
         public ICommand LimpiarBusquedaCommand { get; set; }
 
@@ -85,18 +86,7 @@ namespace ESalazarExamen.ViewModels
                 }
             }
         }
-        public ObservableCollection<Models.Pais> PaisList
-        {
-            get => _paisesList;
-            set
-            {
-                if (_paisesList != value)
-                {
-                    _paisesList = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
+      
         public int Id => _pais.Id;
         
         public PaisViewModel()
@@ -104,22 +94,108 @@ namespace ESalazarExamen.ViewModels
             string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "EduardoSalazar.db3");
             _paisRepository = new PaisRepository(dbPath);
             _pais = new Pais();
-            PaisList = new ObservableCollection<Pais>();
+            Paises = new ObservableCollection<Pais>();
 
+            SaveCommand = new AsyncRelayCommand(Guardar);
+            BuscarPaisCommand = new AsyncRelayCommand(BuscarPais);
             GetAllPaisesCommand = new AsyncRelayCommand(GetAllPaises);
-
+            LimpiarBusquedaCommand = new RelayCommand(LimpiarBusqueda);
 
         }
 
+        private async Task Guardar()
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(_pais.Nombre))
+                {
+                    throw new Exception("El nombre no puede estar vacío.");
+                }
+                if (string.IsNullOrEmpty(_pais.region))
+                {
+                    throw new Exception("El nombre no puede estar vacío.");
+                }
+                if (string.IsNullOrEmpty(_pais.linkMaps))
+                {
+                    throw new Exception("El nombre no puede estar vacío.");
+                }
+
+                _paisRepository.SavePais(_pais.Nombre, _pais.region, _pais.linkMaps);
+
+                StatusMessage = $"Pais {_pais.Nombre} guardado exitosamente.";
+                await Shell.Current.GoToAsync($"..?saved={_pais.Nombre}");
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = $"Error al guardar la persona: {ex.Message}";
+            }
+        }
+        private async Task BuscarPais()
+        {
+            try
+            {
+                // Verifica que el usuario haya ingresado un nombre para buscar
+                if (string.IsNullOrWhiteSpace(Nombre))
+                {
+                    StatusMessage = "Por favor, ingrese un nombre de país para buscar.";
+                    await Shell.Current.DisplayAlert("Error", StatusMessage, "OK");
+                    return;
+                }
+
+                // Conexión a la API para obtener los datos del país
+                var url = $"https://restcountries.com/v3.1/name/{Nombre}?fields=name,region,maps";
+                using var client = new HttpClient();
+                var response = await client.GetAsync(url);
+
+                // Verifica si la respuesta fue exitosa
+                if (response.IsSuccessStatusCode)
+                {
+                    // Deserializa la respuesta en un modelo
+                    var jsonResponse = await response.Content.ReadAsStringAsync();
+                    var paises = JsonSerializer.Deserialize<List<Api>>(jsonResponse);
+
+                    // Si se encuentra al menos un país, actualiza la lista y el país seleccionado
+                    if (paises != null && paises.Count > 0)
+                    {
+                        var paisEncontrado = paises[0];
+                        Pais.Nombre = paisEncontrado.name.common;
+                        Pais.region = paisEncontrado.region;
+                        Pais.linkMaps = paisEncontrado.maps.googleMaps;
+
+                        // Agrega el país a la lista
+                        Paises.Clear();
+                        Paises.Add(Pais);
+
+                        StatusMessage = $"País encontrado: {paisEncontrado.name.common}, Región: {paisEncontrado.region}.";
+                        await Shell.Current.DisplayAlert("Éxito", StatusMessage, "OK");
+                    }
+                    else
+                    {
+                        StatusMessage = "No se encontró ningún país con ese nombre.";
+                        await Shell.Current.DisplayAlert("Aviso", StatusMessage, "OK");
+                    }
+                }
+                else
+                {
+                    StatusMessage = "Error al conectarse a la API.";
+                    await Shell.Current.DisplayAlert("Error", StatusMessage, "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = $"Error al buscar el país: {ex.Message}";
+                await Shell.Current.DisplayAlert("Error", StatusMessage, "OK");
+            }
+        }
         private async Task GetAllPaises()
         {
             try
             {
                 var paises = await _paisRepository.GetAllPaises();
-                PaisList.Clear();
+                Paises.Clear();
                 foreach (var pais in paises)
                 {
-                    PaisList.Add(pais);
+                    Paises.Add(pais);
                 }
                 StatusMessage = $"Los paises se cargaron correctamente";
             }
@@ -127,6 +203,10 @@ namespace ESalazarExamen.ViewModels
             {
                 StatusMessage = $"Error al cargar los paises. Detalles: {ex.Message}";
             }
+        }
+        private void LimpiarBusqueda()
+        {
+            Nombre = string.Empty;
         }
 
     }

@@ -34,22 +34,21 @@ namespace ESalazarExamen.Repositories
             int result = 0;
             try
             {
+                Init();
+
                 if (string.IsNullOrEmpty(nombre))
                     throw new Exception("Se requiere un nombre valido");
 
                 if (string.IsNullOrEmpty(region))
                     throw new Exception("Se requiere una region valida");
 
-                if (string.IsNullOrEmpty(linkmaps))
-                    throw new Exception("Se requiere un link valido");
-
-                Init();
+                
                 result = conn.Insert(new Pais { Nombre = nombre, region = region, linkMaps = linkmaps });
               
-                StatusMessage = $"Pais {nombre} guardado correctamente";
+                StatusMessage = string.Format("Pais {0} guardado correctamente",nombre);
             }catch (Exception ex)
             {
-                StatusMessage = $"Error al guardar el pais. Detalles: {ex.Message}";
+                StatusMessage =string.Format("Error al guardar el pais. Detalles: {0}",ex.Message) ;
             }
             
             
