@@ -18,7 +18,7 @@ namespace ESalazarExamen.Repositories
 
         private void Init()
         {
-            if (conn == null)
+            if (conn != null)
                 return;
             conn = new SQLiteConnection(_dbPath);
             conn.CreateTable<Pais>();
@@ -43,7 +43,11 @@ namespace ESalazarExamen.Repositories
                     throw new Exception("Se requiere una region valida");
 
                 
-                result = conn.Insert(new Pais { Nombre = nombre, region = region, linkMaps = linkmaps });
+                result = conn.Insert(new Pais 
+                { 
+                    Nombre = nombre, 
+                    region = region, 
+                    linkMaps = linkmaps });
               
                 StatusMessage = string.Format("Pais {0} guardado correctamente",nombre);
             }catch (Exception ex)

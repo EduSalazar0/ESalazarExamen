@@ -21,8 +21,8 @@ namespace ESalazarExamen.ViewModels
         public ObservableCollection<Pais> Paises { get; set; }
 
         public ICommand SaveCommand { get; set; }
+        public ICommand GetAllPaisesCommand { get; set; }
         public ICommand BuscarPaisCommand { get; set; }
-        public ICommand GetAllPaisesCommand { get; set;  }
         public ICommand LimpiarBusquedaCommand { get; set; }
 
         public Models.Pais Pais
@@ -91,7 +91,7 @@ namespace ESalazarExamen.ViewModels
         
         public PaisViewModel()
         {
-            string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "EduardoSalazar.db3");
+            string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "EduardoSalazar1.db3");
             _paisRepository = new PaisRepository(dbPath);
             _pais = new Pais();
             Paises = new ObservableCollection<Pais>();
@@ -128,6 +128,24 @@ namespace ESalazarExamen.ViewModels
             catch (Exception ex)
             {
                 StatusMessage = $"Error al guardar la persona: {ex.Message}";
+            }
+        }
+
+        private async Task GetAllPaises()
+        {
+            try
+            {
+                var paises = await _paisRepository.GetAllPaises();
+                Paises.Clear();
+                foreach (var pais in paises)
+                {
+                    Paises.Add(pais);
+                }
+                StatusMessage = $"Los paises se cargaron correctamente";
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = $"Error al cargar los paises. Detalles: {ex.Message}";
             }
         }
         private async Task BuscarPais()
@@ -185,23 +203,6 @@ namespace ESalazarExamen.ViewModels
             {
                 StatusMessage = $"Error al buscar el país: {ex.Message}";
                 await Shell.Current.DisplayAlert("Error", StatusMessage, "OK");
-            }
-        }
-        private async Task GetAllPaises()
-        {
-            try
-            {
-                var paises = await _paisRepository.GetAllPaises();
-                Paises.Clear();
-                foreach (var pais in paises)
-                {
-                    Paises.Add(pais);
-                }
-                StatusMessage = $"Los paises se cargaron correctamente";
-            }
-            catch(Exception ex)
-            {
-                StatusMessage = $"Error al cargar los paises. Detalles: {ex.Message}";
             }
         }
         private void LimpiarBusqueda()

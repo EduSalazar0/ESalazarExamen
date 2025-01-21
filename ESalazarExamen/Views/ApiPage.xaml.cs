@@ -8,7 +8,7 @@ namespace ESalazarExamen.Views
         public ApiPage()
         {
             InitializeComponent();
-            BindingContext = new ApiViewModel();
+            BindingContext = new PaisViewModel();
         }
     }
 

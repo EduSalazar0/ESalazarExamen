@@ -19,6 +19,7 @@ namespace ESalazarExamen.ViewModels
         private readonly PaisRepository _paisRepository;
 
         public ObservableCollection<Api> Paises { get; set; }
+
         public ICommand BuscarPaisCommand { get; set; }
         public ICommand SavePaisCommand { get; set; }
 
@@ -33,6 +34,7 @@ namespace ESalazarExamen.ViewModels
             SavePaisCommand = new AsyncRelayCommand(SavePais);
 
         }
+
 
         public string NombreSeleccionado
         {
@@ -93,6 +95,7 @@ namespace ESalazarExamen.ViewModels
                 await Shell.Current.DisplayAlert("Error", StatusMessage, "OK");
             }
         }
+        
         public async Task SavePais()
         {
             try
@@ -103,7 +106,7 @@ namespace ESalazarExamen.ViewModels
                     return;
                 }
 
-                _paisRepository.SavePais(PaisSeleccionado.name.common, PaisSeleccionado.region, PaisSeleccionado.maps.googleMaps);
+                await _paisRepository.SavePais(PaisSeleccionado.name.common, PaisSeleccionado.region, PaisSeleccionado.maps.googleMaps);
                 StatusMessage = $"Pais {PaisSeleccionado.name.common} guardado exitosamente.";
                 await Shell.Current.DisplayAlert("Guardado", StatusMessage, "OK");
             }

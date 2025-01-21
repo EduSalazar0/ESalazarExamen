@@ -6,7 +6,7 @@
              Title="Listado de Paises Guardados">
 
     <ContentPage.BindingContext>
-        <vm:ApiViewModel/>
+        <vm:PaisViewModel/> 
     </ContentPage.BindingContext>
 
     <ScrollView>
@@ -22,11 +22,10 @@
 
             <!-- CollectionView para mostrar los países almacenados -->
             <CollectionView x:Name="ListaPaises"
-                            ItemsSource="{Binding PaisList}"
+                            ItemsSource="{Binding Paises}"
                             HeightRequest="200"
                             VerticalScrollBarVisibility="Default"
                             SelectionMode="Single"
-                            SelectionChangedCommand="{Binding EliminarPaisCommand}"
                             SelectionChangedCommandParameter="{Binding Source={RelativeSource Self}, Path=SelectedItem}">
 
                 <CollectionView.ItemsLayout>
@@ -42,19 +41,23 @@
                                BackgroundColor="LightCyan">
                             <HorizontalStackLayout>
                                 <Label Text="{Binding Id}"
+                                       TextColor="DarkSeaGreen"
                                        FontSize="Small"
                                        HorizontalTextAlignment="Center"
                                        VerticalTextAlignment="Center"
                                        WidthRequest="30" />
                                 <Label Text="{Binding Nombre}"
+                                       TextColor="DarkSeaGreen"
                                        FontSize="Medium"
                                        HorizontalOptions="Center"
                                        VerticalOptions="Center" />
-                                <Label Text="{Binding Region}"
+                                <Label Text="{Binding region}"
+                                       TextColor="DarkSeaGreen"
                                        FontSize="Medium"
                                        HorizontalOptions="Center"
                                        VerticalOptions="Center" />
-                                <Label Text="{Binding LinkGoogle}"
+                                <Label Text="{Binding linkMaps}"
+                                       TextColor="DarkSeaGreen"
                                        FontSize="Small"
                                        HorizontalOptions="Center"
                                        VerticalOptions="Center" />

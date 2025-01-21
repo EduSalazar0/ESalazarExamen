@@ -9,11 +9,11 @@
 
     <TabBar>
         <ShellContent
-            Title="Home"
+            Title="Consulta API"
             ContentTemplate="{DataTemplate local:MainPage}"
             Route="MainPage" />
         <ShellContent 
-            Title="API"
+            Title="Lista Paises DB"
             ContentTemplate="{DataTemplate local:ApiPage}" 
             Route="ApiPage"/>
     </TabBar>
